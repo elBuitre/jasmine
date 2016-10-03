@@ -15,6 +15,8 @@ public class JasmineSecurityConfiguration extends WebSecurityConfigurerAdapter {
 			.and()
 			.formLogin()
 				.loginPage("/login")
-				.permitAll();
+				.permitAll()
+			.and()
+			.logout().permitAll();
 	}
 }

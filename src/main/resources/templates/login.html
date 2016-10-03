@@ -5,11 +5,13 @@
 <body>
 	<div id="loginForm">
 		<h3>Login With Username and Password</h3>
-		<div class="error" th:if="${param.error}">
-			Incorrect username or password. Try again.
-		</div>
-		
-		<form name="f" th:action="@{/login}" method='POST'>
+		<form name="f" th:action="@{/login}" method="POST">
+			<div class="error" th:if="${param.error}">
+				Incorrect username or password. Try again.
+			</div>
+			<div th:if="${param.logout}">
+				You have been logged out.
+			</div>
 			<table>
 				<tr>
 					<td>User:</td>
