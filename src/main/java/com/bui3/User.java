@@ -1,17 +1,25 @@
 package com.bui3;
 
-import java.util.Date;
+import javax.persistence.Entity;
+import javax.persistence.Id;
 
+import org.joda.time.LocalDate;
+
+@Entity
 public class User {
 
+	@Id
 	private String username;
+	
 	private String password;
 	private String firstname;
 	private String lastname;
 	
 	private int role;
 	
-	private Date expireon;
+	private boolean enabled;
+	
+	private LocalDate expireon;
 	
 	public String getUsername() {
 		return username;
@@ -52,11 +60,20 @@ public class User {
 		this.role = role;
 	}
 	
-	public Date getExpireon() {
+	public LocalDate getExpireon() {
 		return expireon;
 	}
 	
-	public void setExpireon(Date expireon) {
+	public void setExpireon(LocalDate expireon) {
 		this.expireon = expireon;
+	}
+	
+	public boolean isEnabled() {
+		LocalDate now = LocalDate.now();
+		return (enabled && (expireon.isAfter(now)));
+	}
+	
+	public void enable(boolean enabled) {
+		this.enabled = enabled;
 	}
 }
