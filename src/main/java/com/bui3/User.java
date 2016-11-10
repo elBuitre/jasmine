@@ -1,13 +1,27 @@
 package com.bui3;
 
+import java.util.Arrays;
+import java.util.Collection;
+
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.Id;
 
 import org.joda.time.LocalDate;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 @Entity
-public class User {
+public class User implements UserDetails {
 
+	private final String ROLE_PREFIX = "ROLE_";
+	private static final long serialVersionUID = 1L;
+
+	public enum Role {
+		ADMIN, GUEST, USER 
+	}
 	@Id
 	private String username;
 	
@@ -15,7 +29,8 @@ public class User {
 	private String firstname;
 	private String lastname;
 	
-	private int role;
+	@Enumerated(EnumType.STRING)
+	private Role role;
 	
 	private boolean enabled;
 	
@@ -52,11 +67,11 @@ public class User {
 		this.lastname = lastname;
 	}
 	
-	public int getRole() {
+	public Role getRole() {
 		return role;
 	}
 	
-	public void setRole(int role) {
+	public void setRole(Role role) {
 		this.role = role;
 	}
 	
@@ -69,11 +84,35 @@ public class User {
 	}
 	
 	public boolean isEnabled() {
-		LocalDate now = LocalDate.now();
-		return (enabled && (expireon.isAfter(now)));
+		return enabled;
 	}
 	
 	public void enable(boolean enabled) {
 		this.enabled = enabled;
+	}
+
+	@Override
+	public Collection<? extends GrantedAuthority> getAuthorities() {
+		// TODO Auto-generated method stub
+		return Arrays.asList(new SimpleGrantedAuthority(
+				ROLE_PREFIX + role.toString()));
+	}
+	
+	@Override
+	public boolean isAccountNonExpired() {
+		if (null != expireon)
+			return expireon.isAfter(LocalDate.now());
+		return true;
+	}
+
+	@Override
+	public boolean isAccountNonLocked() {
+		return enabled;
+	}
+
+	@Override
+	public boolean isCredentialsNonExpired() {
+		// TODO Auto-generated method stub
+		return true;
 	}
 }

@@ -12,4 +12,9 @@ public class JasmineController {
 	public String homePage() {
 		return "homePage";
 	}
+	
+	@RequestMapping("/admin")
+	public String adminPage() {
+		return "adminPage";
+	}
 }

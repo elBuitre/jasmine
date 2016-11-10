@@ -23,7 +23,7 @@ public class UserRepositoryTests {
 	private final String LAST_NAME = "Carniel";
 	private final String PASSWORD = "pwd";
 	private final String FAKE_USER = "fakeuser";
-	private final int ROLE = 1;
+	private final User.Role ROLE = User.Role.ADMIN;
 	private final int TOTAL_USERS = 10;
 	
 	@Test
@@ -69,7 +69,7 @@ public class UserRepositoryTests {
 			user.setFirstname("Firstname_" + i);
 			user.setLastname("Lastname_" + i);
 			user.setPassword("Password_" + i);
-			user.setRole(i);
+			user.setRole(User.Role.USER);
 			
 			repository.save(user);
 		}
