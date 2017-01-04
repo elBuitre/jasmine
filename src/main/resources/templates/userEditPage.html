@@ -1,0 +1,32 @@
+<html>
+<head>
+<title>Jasmine - Edit User</title>
+<link rel="stylesheet" type="text/css" th:href="@{/css/style.css}"></link>
+</head>
+<body>
+	<h1>Edit User</h1>
+	<form name="edit" th:action="@{/admin/edit}" method="POST" th:object="${user}">
+		<label for="username">Username:</label><br/>
+		<input type="text" th:field="*{username}" size="255" readonly="readonly" /><br/>
+		<label for="firstname">First Name:</label>
+		<input type="text" th:field="*{firstname}" size="255" /><br/>
+		<label for="lastname">Last Name:</label>
+		<input type="text" th:field="*{lastname}" size="255" /><br/>
+		<label for="password">Password:</label>
+		<input type="password" th:field="*{password}" size="255" /><br/>
+		<label for="enabled">Enabled:</label>
+		<input type="checkbox" th:field="*{enabled}" /><br/>
+		<label for="expireon">Expires on:</label>
+		<input type="text" th:field="*{expireon}" th:errorclass="fieldError" />
+		<label th:if="${#fields.hasErrors('expireon')}">Incorrect date</label><br/>
+		<select th:field="*{role}">
+			<option th:each="role : ${T(com.bui3.Role.RoleValues).values()}"
+					th:value="${role}"
+					th:text="${role}" />
+		</select>
+		<br/>
+		<button type="submit" name="action" value="save">Save</button>
+		<button type="submit" name="action" value="cancel">Cancel</button>
+	</form>
+</body>
+</html>

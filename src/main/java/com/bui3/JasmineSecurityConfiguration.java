@@ -7,7 +7,6 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
@@ -22,7 +21,7 @@ public class JasmineSecurityConfiguration extends WebSecurityConfigurerAdapter {
 	protected void configure(HttpSecurity http) throws Exception {
 		http
 			.authorizeRequests()
-				.antMatchers("/admin").hasRole("ADMIN")
+				.antMatchers("/admin/**").hasRole("ADMIN")
 				.anyRequest().authenticated()
 			.and()
 			.formLogin()
@@ -43,9 +42,9 @@ public class JasmineSecurityConfiguration extends WebSecurityConfigurerAdapter {
 	public UserDetailsService userDetailsService() {
 		return new UserDetailsService() {
 			@Override
-			public UserDetails loadUserByUsername(String username) 
+			public User loadUserByUsername(String username) 
 					throws UsernameNotFoundException {
-				UserDetails userDetails = userRepository.findOne(username);
+				User userDetails = userRepository.findOne(username);
 				if (null != userDetails)
 					return userDetails;
 				

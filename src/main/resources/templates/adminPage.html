@@ -1,9 +1,76 @@
 <html>
 <head>
-<title>Jasmine</title>
+<title>Jasmine - Administrator</title>
+<link rel="stylesheet" type="text/css" th:href="@{/css/style.css}"></link>
 </head>
 <body>
 	<h2>Hi, I'm Jasmine administrator!</h2>
+	<div th:unless="${#lists.isEmpty(users)}">
+		<table>
+			<thead>
+				<tr>
+					<th>Username</th>
+					<th>First Name</th>
+					<th>Last Name</th>
+					<th>Password</th>
+					<th>Role</th>
+					<th>Enabled</th>
+					<th>Expires on</th>
+					<th>Actions</th>
+				</tr>
+			</thead>
+			<body>
+				<tr th:each="user : ${users}">
+					<td th:text="${user.username}" />
+					<td th:text="${user.firstname}" />
+					<td th:text="${user.lastname}" />
+					<td th:text="${user.password}" />
+					<td th:text="${user.role}" />
+					<th:block>
+						<td th:if="${user.enabled} == true" th:text="Yes" />
+						<td th:if="${user.enabled} == false" th:text="No" />
+					</th:block>
+					<td th:text="${{user.expireon}}" />
+					<td>
+						<a href="#" data-th-href="@{/admin/delete(
+							username=${user.username}, phase=stage)}">delete</a>
+						|
+						<a href="#" data-th-href="@{/admin/edit(
+							username=${user.username})}">edit</a>
+					</td>
+				</tr>
+			</body>
+		</table>
+	</div>
+	<div th:if="${#lists.isEmpty(users)}">
+		<p>There are no users</p>
+	</div>
+	
+	<hr/>
+	
+	<h3 th:text="#{user.add}">Add a user</h3>
+	<form name="add" th:action="@{/admin}" method="POST" th:object="${user}">
+		<label for="username">Username:</label>
+		<input type="text" th:field="*{username}" size="255" /><br/>
+		<label for="firstname">First Name:</label>
+		<input type="text" th:field="*{firstname}" size="255" /><br/>
+		<label for="lastname">Last Name:</label>
+		<input type="text" th:field="*{lastname}" size="255" /><br/>
+		<label for="password">Password:</label>
+		<input type="password" th:field="*{password}" size="255" /><br/>
+		<label for="enabled">Enabled:</label>
+		<input type="checkbox" th:field="*{enabled}" /><br/>
+		<label for="expireon">Expires on:</label>
+		<input type="text" th:field="*{expireon}" th:errorclass="fieldError" />
+		<label th:if="${#fields.hasErrors('expireon')}">Incorrect date</label><br/>
+		<select th:field="*{role}">
+			<option th:each="role : ${T(com.bui3.Role.RoleValues).values()}"
+					th:value="${role}"
+					th:text="${role}" />
+		</select>
+		<input type="submit" />
+	</form>
+	
 	<form name="logout" th:action="@{/logout}" method="POST">
 		<input type="submit" value="Sign Out" />
 	</form>

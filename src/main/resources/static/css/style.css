@@ -3,6 +3,11 @@ body {
 	font-family: arial, helvetica, sans-serif;
 }
 
+.userHeadline {
+	font-size: 12pt;
+	font-weight: bold;
+}
+
 label {
 	font-weight: bold;
 }
@@ -17,4 +22,8 @@ label {
 
 .oops {
 	font-size: 76pt;
+}
+
+.fieldError {
+    border: 1px solid red;
 }
