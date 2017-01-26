@@ -1,0 +1,28 @@
+.table {
+	font-size: 14px;
+}
+
+.input-group {
+	width: 85%;
+	margin-bottom: 3px;
+	margin-top: 0px;
+	padding-bottom: 0px;
+	padding-top: 0px;
+}
+
+.input-group .input-group-addon {
+	width: 115px;
+	text-align: left;
+}
+
+.input-group .alert-danger {
+	width: 100%;
+	margin-bottom: 0;
+	padding-top: 6px;
+	padding-bottom: 6px;
+	padding-left: 12px;
+	padding-right: 12px;
+	border-top-left-radius: 0;
+	border-bottom-left-radius: 0;
+	font-size: 14;
+}

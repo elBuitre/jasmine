@@ -1,39 +1,65 @@
 <html>
 <head>
-<title>Jasmine - Delete User</title>
-<link rel="stylesheet" type="text/css" th:href="@{/css/style.css}"></link>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+	<link rel="stylesheet" type="text/css" th:href="@{../css/bootstrap.min.css}" media="screen" />
+	<link rel="stylesheet" type="text/css" th:href="@{../css/signin.css}" media="screen" />
+	<script src="https://use.fontawesome.com/369dfeb314.js"></script>
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="//code.jquery.com/jquery.js"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="../js/bootstrap.min.js"></script>
+	<title th:text="#{admin.titledelete}">admin.titledelete</title>
 </head>
 <body>
-	<h1>Delete User</h1>
-	<table>
-		<tr>
-			<td>Username</td>
-			<td th:text="${user.username}" />
-		</tr>
-		<tr>
-			<td>First Name</td>
-			<td th:text="${user.firstname}" />
-		</tr>
-		<tr>
-			<td>Last Name</td>
-			<td th:text="${user.lastname}" />
-		</tr>
-		<tr>
-			<td>Role</td>
-			<td th:text="${user.role}" />
-		</tr>
-		<tr>
-			<td>
-				<a href="#" data-th-href="@{/admin/delete(username=${user.username}, phase=confirm)}">
-				<button type="button">Delete</button>
-				</a>
-			</td>
-			<td>
-				<a href="#" data-th-href="@{/admin/delete(username=${user.username}, phase=cancel)}">
-				<button type="button">Cancel</button>
-				</a>
-			</td>
-		</tr>
-	</table>
+	<div class="container">
+		<form class="form-signin" th:action="@{/logout}" method="POST">
+			<div class="input-group input-sm">
+				<div style="display: inline-block; position: absolute;">
+					<label>
+						<i class="fa fa-user-times fa-2x"></i>
+					</label>
+				</div>
+				<div style="display: inline-block; right: 0; position: absolute;">
+					<button class="btn btn-primary btn-sm" type="submit" th:text="#{signout}" style="margin-top: -5px;" />
+				</div>
+			</div>
+			<div class="input-group input-sm">
+				<span class="input-group-addon" th:text="#{username}" style="width: 120px">username:</span>
+				<span class="form-control" th:text="${user.username}" />
+			</div>
+			<div class="input-group input-sm">
+				<span class="input-group-addon" th:text="#{firstname}" style="width: 120px">firstname:</span>
+				<span class="form-control" th:text="${user.firstname}" />
+			</div>
+			<div class="input-group input-sm">
+				<span class="input-group-addon" th:text="#{lastname}" style="width: 120px">lastname:</span>
+				<span class="form-control" th:text="${user.lastname}" />
+			</div>
+			<div class="input-group input-sm">
+				<span class="input-group-addon" style="width: 120px">Password:</span>
+				<span class="form-control" th:text="${user.password}" />
+			</div>
+			<div class="input-group input-sm">
+				<span class="input-group-addon" th:text="#{expireon}" style="width: 120px">expireon:</span>
+				<span class="form-control" th:text="${{user.expireon}}" />
+			</div>
+			<div class="input-group input-sm">
+				<span class="input-group-addon" th:text="#{role}" style="width: 120px">role:</span>
+				<span class="form-control" th:text="${user.role}" />
+			</div>
+			<div class="input-group input-sm">
+				<div style="display: inline-block; position: absolute;">
+					<a href="#" data-th-href="@{/admin/delete(username=${user.username}, phase=confirm)}">
+						<button class="btn btn-primary btn-sm" type="button" th:text="#{delete}">delete</button>
+					</a>
+				</div>
+				<div style="display: inline-block; position: absolute; right: 0;">
+					<a href="#" data-th-href="@{/admin/delete(username=${user.username}, phase=cancel)}">
+						<button class="btn btn-primary btn-sm" type="button" th:text="#{cancel}">cancel</button>
+					</a>
+				</div>
+			</div>
+		</form>
+	</div>
 </body>
 </html>

@@ -1,78 +1,126 @@
 <html>
 <head>
-<title>Jasmine - Administrator</title>
-<link rel="stylesheet" type="text/css" th:href="@{/css/style.css}"></link>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+	<link rel="stylesheet" type="text/css" th:href="@{css/bootstrap.min.css}" media="screen" />
+	<link rel="stylesheet" type="text/css" th:href="@{css/admin.css}" />
+	<script src="https://use.fontawesome.com/369dfeb314.js"></script>
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="//code.jquery.com/jquery.js"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/admin.js"></script>
+	<title th:text="#{admin.title}">admin.title</title>
 </head>
 <body>
-	<h2>Hi, I'm Jasmine administrator!</h2>
-	<div th:unless="${#lists.isEmpty(users)}">
-		<table>
-			<thead>
-				<tr>
-					<th>Username</th>
-					<th>First Name</th>
-					<th>Last Name</th>
-					<th>Password</th>
-					<th>Role</th>
-					<th>Enabled</th>
-					<th>Expires on</th>
-					<th>Actions</th>
-				</tr>
-			</thead>
-			<body>
-				<tr th:each="user : ${users}">
-					<td th:text="${user.username}" />
-					<td th:text="${user.firstname}" />
-					<td th:text="${user.lastname}" />
-					<td th:text="${user.password}" />
-					<td th:text="${user.role}" />
-					<th:block>
-						<td th:if="${user.enabled} == true" th:text="Yes" />
-						<td th:if="${user.enabled} == false" th:text="No" />
-					</th:block>
-					<td th:text="${{user.expireon}}" />
-					<td>
-						<a href="#" data-th-href="@{/admin/delete(
-							username=${user.username}, phase=stage)}">delete</a>
-						|
-						<a href="#" data-th-href="@{/admin/edit(
-							username=${user.username})}">edit</a>
-					</td>
-				</tr>
-			</body>
-		</table>
+	<div class="container">
+		<div class="input-group input-sm">
+			<div style="display: inline-block; position: absolute;">
+				<h3 th:text="#{admin.pagetitle}">admin.pagetitle</h3>
+			</div>
+			<div style="display: inline-block; right: 10; position: absolute;">
+				<form name="logout" th:action="@{/logout}" method="POST">
+					<button class="btn btn-primary btn-sm" type="submit" th:text="#{signout}" style="margin-top: 15px;" />
+				</form>
+			</div>
+		</div>
+		<div class="input-group input-sm"><hr/></div>
 	</div>
-	<div th:if="${#lists.isEmpty(users)}">
-		<p>There are no users</p>
+	<div class="container" th:unless="${#lists.isEmpty(users)}">
+		<div class="input-group input-sm">
+			<label>
+				<i class="fa fa-users fa-2x"></i>
+			</label>
+		</div>
+		<div class="input-group input-sm">
+			<table class="table table-striped table-hover table-condensed">
+				<thead>
+					<tr>
+						<th th:text="#{username}">username</th>
+						<th th:text="#{firstname}">firstname</th>
+						<th th:text="#{lastname}">lastname</th>
+						<th>Password</th>
+						<th th:text="#{role}">role</th>
+						<th th:text="#{enabled}">enabled</th>
+						<th th:text="#{expireon}">expireon</th>
+						<th th:text="#{admin.actions}">admin.actions</th>
+					</tr>
+				</thead>
+				<body>
+					<tr th:each="user : ${users}">
+						<td th:text="${user.username}" />
+						<td th:text="${user.firstname}" />
+						<td th:text="${user.lastname}" />
+						<td th:text="${user.password}" />
+						<td th:text="${user.role}" />
+						<th:block>
+							<td th:if="${user.enabled} == true" th:text="#{yes}" />
+							<td th:if="${user.enabled} == false" th:text="#{no}" />
+						</th:block>
+						<td th:text="${{user.expireon}}" />
+						<td>
+							<a href="#" data-th-href="@{/admin/delete(
+								username=${user.username}, phase=stage)}">
+									<i class="fa fa-trash"></i></a>
+							|
+							<a href="#" data-th-href="@{/admin/edit(
+								username=${user.username})}">
+									<i class="fa fa-pencil"></i></a>
+						</td>
+					</tr>
+				</body>
+			</table>
+		</div>
 	</div>
-	
-	<hr/>
-	
-	<h3 th:text="#{user.add}">Add a user</h3>
-	<form name="add" th:action="@{/admin}" method="POST" th:object="${user}">
-		<label for="username">Username:</label>
-		<input type="text" th:field="*{username}" size="255" /><br/>
-		<label for="firstname">First Name:</label>
-		<input type="text" th:field="*{firstname}" size="255" /><br/>
-		<label for="lastname">Last Name:</label>
-		<input type="text" th:field="*{lastname}" size="255" /><br/>
-		<label for="password">Password:</label>
-		<input type="password" th:field="*{password}" size="255" /><br/>
-		<label for="enabled">Enabled:</label>
-		<input type="checkbox" th:field="*{enabled}" /><br/>
-		<label for="expireon">Expires on:</label>
-		<input type="text" th:field="*{expireon}" th:errorclass="fieldError" />
-		<label th:if="${#fields.hasErrors('expireon')}">Incorrect date</label><br/>
-		<select th:field="*{role}">
-			<option th:each="role : ${T(com.bui3.Role.RoleValues).values()}"
-					th:value="${role}"
-					th:text="${role}" />
-		</select>
-		<input type="submit" />
-	</form>
-	
-	<form name="logout" th:action="@{/logout}" method="POST">
-		<input type="submit" value="Sign Out" />
-	</form>
+	<div class="container">
+		<div th:if="${#lists.isEmpty(users)}">
+			<h4 th:text="#{admin.nousers}">admin.nousers</h4>
+		</div>
+		<div class="input-group input-sm">
+			<hr/>
+		</div>
+		<form name="add" th:action="@{/admin}" method="POST" th:object="${user}">		
+			<div class="input-group input-sm">
+				<label>
+					<i class="fa fa-user-plus fa-2x"></i>
+				</label>
+			</div>
+			<div class="input-group input-sm">
+				<span class="input-group-addon" th:text="#{username}">username:</span>
+				<input class="form-control" type="text" th:field="*{username}"/>
+			</div>
+			
+			<div class="input-group input-sm">
+				<span class="input-group-addon" th:text="#{firstname}">firstname:</span>
+				<input class="form-control" type="text" th:field="*{firstname}"/>
+			</div>
+			<div class="input-group input-sm">
+				<span class="input-group-addon" th:text="#{lastname}">lastname:</span>
+				<input class="form-control" type="text" th:field="*{lastname}"/>
+			</div>
+			<div class="input-group input-sm">
+				<span class="input-group-addon">Password:</span>
+				<input class="form-control" type="password" th:field="*{password}"/>
+			</div>
+			<div class="input-group input-sm">
+				<span class="input-group-addon" th:text="#{expireon}">expireon:</span>
+				<input type="text" th:field="*{expireon}" th:class="${#fields.hasErrors('expireon')}? 'alert alert-danger' : 'form-control'" />
+			</div>
+			<div class="input-group input-sm">
+				<span class="input-group-addon" th:text="#{role}">role:</span>
+				<select th:field="*{role}" class="btn btn-default" style="border-top-left-radius: 0; border-bottom-left-radius: 0;">
+					<option th:each="role : ${T(com.bui3.Role.RoleValues).values()}"
+							th:value="${role}"
+							th:text="${role}" />
+				</select>
+			</div>
+			<div class="input-group input-sm">
+				<input type="checkbox" th:field="*{enabled}" style="margin-right: 5px"/>
+				<label style="font-weight: 400; font-size: 14; font-color: #555" th:text="#{enabled}">Enabled</label>
+			</div>
+			<div class="input-group input-sm">
+				<button class="btn btn-primary btn-sm" type="submit" th:text="#{submit}" />
+			</div>
+		</form>
+	</div>	
 </body>
 </html>
