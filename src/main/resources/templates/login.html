@@ -7,7 +7,7 @@
 	<title th:text="#{login.title}">Login</title>
 </head>
 <body>
-	<div class="container">
+	<div class="container drop-shadow">
 		<form class="form-signin" th:action="@{/login}" method="POST">
 			<div class="alert alert-danger" th:if="${param.error}">
 				<p th:text="#{login.wrong_credentials}">Incorrect username or password. Try again.</p>

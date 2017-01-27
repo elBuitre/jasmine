@@ -69,6 +69,25 @@
 					</tr>
 				</body>
 			</table>
+			<nav aria-label="Page navigation"  th:unless="${beginIndex} == ${endIndex}" style="text-align: center;">
+				<ul class="pagination" style="margin: 0">
+					<li th:class="(${currentIndex} == 1) ? 'disabled'">
+						<a th:if="${currentIndex > 1}" th:href="@{'/admin' + ${currentIndex-1}}" aria-label="Previous" disabled="disabled">
+							<span aria-hidden="true">&laquo;</span>
+						</a>
+						<span aria-hidden="true" th:if="${currentIndex == 1}">&laquo;</span>
+					</li>
+					<li th:each="i : ${#numbers.sequence(beginIndex, endIndex)}" th:class="(${i} == ${currentIndex}) ? 'active'">
+						<a th:href="@{'/admin' + ${i}}" th:text="${i}" />
+					</li>
+					<li th:class="(${currentIndex} == ${totalPages}) ? 'disabled'">
+						<a th:unless="(${currentIndex == totalPages})" th:href="@{'/admin' + ${currentIndex+1}}" aria-label="Next">
+							<span aria-hidden="true">&raquo;</span>
+						</a>
+						<span aria-hidden="true" th:if="${currentIndex == totalPages}">&raquo;</span>
+    				</li>				
+				</ul>
+			</nav>
 		</div>
 	</div>
 	<div class="container">
