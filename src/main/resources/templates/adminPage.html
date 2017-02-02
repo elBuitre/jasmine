@@ -1,14 +1,14 @@
 <html>
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-	<link rel="stylesheet" type="text/css" th:href="@{css/bootstrap.min.css}" media="screen" />
-	<link rel="stylesheet" type="text/css" th:href="@{css/admin.css}" />
+	<link rel="stylesheet" type="text/css" th:href="@{../css/bootstrap.min.css}" media="screen" />
+	<link rel="stylesheet" type="text/css" th:href="@{../css/admin.css}" />
 	<script src="https://use.fontawesome.com/369dfeb314.js"></script>
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
     <script src="//code.jquery.com/jquery.js"></script>
     <!-- Include all compiled plugins (below), or include individual files as needed -->
-    <script src="js/bootstrap.min.js"></script>
-    <script src="js/admin.js"></script>
+    <script src="../js/bootstrap.min.js"></script>
+    <script src="../js/admin.js"></script>
 	<title th:text="#{admin.title}">admin.title</title>
 </head>
 <body>
@@ -17,7 +17,7 @@
 			<div style="display: inline-block; position: absolute;">
 				<h3 th:text="#{admin.pagetitle}">admin.pagetitle</h3>
 			</div>
-			<div style="display: inline-block; right: 10; position: absolute;">
+			<div style="display: inline-block; right: 10px; position: absolute;">
 				<form name="logout" th:action="@{/logout}" method="POST">
 					<button class="btn btn-primary btn-sm" type="submit" th:text="#{signout}" style="margin-top: 15px;" />
 				</form>
@@ -25,11 +25,37 @@
 		</div>
 		<div class="input-group input-sm"><hr/></div>
 	</div>
-	<div class="container" th:unless="${#lists.isEmpty(users)}">
-		<div class="input-group input-sm">
-			<label>
-				<i class="fa fa-users fa-2x"></i>
-			</label>
+	<div class="container" th:unless="${#lists.isEmpty(users.content)}">
+		<div class="row">
+			<div class="col-lg-6">
+				<div class="input-group">
+					<label>
+						<i class="fa fa-users fa-2x"></i>
+					</label>
+				</div>
+			</div>
+			<div class="col-lg-4">
+				<form th:if="${param.filter} == null" method="POST" th:action="@{/admin/search}">
+					<div class="input-group">
+						<input name="filter" type="text" class="form-control" placeholder="Filter..." />
+						<span class="input-group-btn">
+							<button class="btn btn-default" type="submit">
+								<i class="fa fa-search" style="padding: 3px" />
+							</button>
+						</span>
+					</div>
+				</form>
+				<form th:if="${param.filter} != null" method="GET" th:action="@{/admin}">
+					<div class="input-group">
+						<input type="text" class="form-control" th:value="${param.filter[0]}" readonly="true" />
+						<span class="input-group-btn">
+							<button class="btn btn-default" type="submit">
+								<i class="fa fa-close" style="padding: 3px"></i>
+							</button>
+						</span>
+					</div>
+				</form>
+			</div>
 		</div>
 		<div class="input-group input-sm">
 			<table class="table table-striped table-hover table-condensed">
@@ -69,19 +95,26 @@
 					</tr>
 				</body>
 			</table>
-			<nav aria-label="Page navigation"  th:unless="${beginIndex} == ${endIndex}" style="text-align: center;">
+			<nav aria-label="Page navigation"  th:unless="${beginIndex} >= ${endIndex}" style="text-align: center;">
 				<ul class="pagination" style="margin: 0">
 					<li th:class="(${currentIndex} == 1) ? 'disabled'">
-						<a th:if="${currentIndex > 1}" th:href="@{'/admin' + ${currentIndex-1}}" aria-label="Previous" disabled="disabled">
+						<a th:if="${currentIndex > 1} and ${param.filter} == null" th:href="@{'/admin' + ${currentIndex-1}}" aria-label="Previous" disabled="disabled">
 							<span aria-hidden="true">&laquo;</span>
 						</a>
-						<span aria-hidden="true" th:if="${currentIndex == 1}">&laquo;</span>
+						<a th:if="${currentIndex > 1} and ${param.filter} != null" th:href="@{'/admin' + ${currentIndex-1} + '?filter=' + ${param.filter[0]}}" aria-label="Previous" disabled="disabled">
+							<span aria-hidden="true">&laquo;</span>
+						</a>
+						<span th:if="${currentIndex == 1}" aria-hidden="true">&laquo;</span>
 					</li>
 					<li th:each="i : ${#numbers.sequence(beginIndex, endIndex)}" th:class="(${i} == ${currentIndex}) ? 'active'">
-						<a th:href="@{'/admin' + ${i}}" th:text="${i}" />
+						<a th:if="${param.filter} != null" th:href="@{'/admin' + ${i} + '?filter=' + ${param.filter[0]}}" th:text="${i}" />
+						<a th:if="${param.filter} == null" th:href="@{'/admin' + ${i}}" th:text="${i}" />
 					</li>
 					<li th:class="(${currentIndex} == ${totalPages}) ? 'disabled'">
-						<a th:unless="(${currentIndex == totalPages})" th:href="@{'/admin' + ${currentIndex+1}}" aria-label="Next">
+						<a th:unless="(${currentIndex} == ${totalPages}) or ${param.filter} != null" th:href="@{'/admin' + ${currentIndex+1}}" aria-label="Next">
+							<span aria-hidden="true">&raquo;</span>
+						</a>
+						<a th:unless="(${currentIndex} == ${totalPages}) or ${param.filter} == null" th:href="@{'/admin' + ${currentIndex+1} + '?filter=' + ${param.filter[0]}}" aria-label="Next">
 							<span aria-hidden="true">&raquo;</span>
 						</a>
 						<span aria-hidden="true" th:if="${currentIndex == totalPages}">&raquo;</span>
@@ -91,8 +124,22 @@
 		</div>
 	</div>
 	<div class="container">
-		<div th:if="${#lists.isEmpty(users)}">
-			<h4 th:text="#{admin.nousers}">admin.nousers</h4>
+		<div th:if="${#lists.isEmpty(users.content)}">
+			<div class="col-lg-6">
+				<h4 th:text="#{admin.nousers}">admin.nousers</h4>
+			</div>
+			<div class="col-lg-4">			
+				<form th:if="${param.filter} != null" method="GET" th:action="@{/admin}">
+					<div class="input-group">
+						<input type="text" class="form-control" th:value="${param.filter[0]}" readonly="true" />
+						<span class="input-group-btn">
+							<button class="btn btn-default" type="submit">
+								<i class="fa fa-close" style="padding: 3px"></i>
+							</button>
+						</span>
+					</div>
+				</form>
+			</div>
 		</div>
 		<div class="input-group input-sm">
 			<hr/>

@@ -32,41 +32,48 @@ public class JasmineController {
 	@Autowired
 	RoleRepository roleRepository;
 	
-	//@ModelAttribute("users")
-	public Page<User> populateUsers(Integer pageNumber) {
+
+	
+	public Page<User> populateUsers(Integer pageNumber, String filter) {
 		PageRequest request =
 				new PageRequest(pageNumber-1, usersListSize,
 						Sort.Direction.ASC, "username");
-		return userRepository.findAll(request);
+		
+		if (null == filter || filter.equals(""))
+			return userRepository.findAll(request);
+		
+		return userRepository.findByStringFieldsLike(filter, request);
 	}
-	/*
-	public List<User> populateUsers() {
-		return userRepository.findAll();
-	}
-	*/
+
 	
+
 	@ModelAttribute("roles")
 	public List<Role> populateRoles() {
 		return roleRepository.findAll();
 	}
 
-	
-	
+
 	
 	@RequestMapping(method=RequestMethod.GET)
 	public String homePage() {
 		return "homePage";
 	}
 	
-	
-	
+	@RequestMapping(value="/admin/search", method=RequestMethod.POST)
+	public String adminSearch(@RequestParam(name="filter", required=false) String filter,
+			Model model, User user) {
+		return adminPage(null, filter, model, user);
+	}
 	
 	@RequestMapping(value="/admin{pageNumber}", method=RequestMethod.GET)
-	public String adminPage(@PathVariable Integer pageNumber, Model model,
+	public String adminPage(@PathVariable Integer pageNumber,
+			@RequestParam(name="filter", required=false) String filter,
+			Model model,
 			User user) {
 		
 		Page<User> page = populateUsers(
-				((null != pageNumber) ? pageNumber : 1));
+				((null != pageNumber) ? pageNumber : 1),
+				filter);
 		
 		int pages = page.getTotalPages();
 		int current = page.getNumber() + 1;
@@ -79,10 +86,12 @@ public class JasmineController {
 		model.addAttribute("currentIndex", current);
 		model.addAttribute("totalPages", pages);
 		
+		if (null != filter)
+			model.addAttribute("filter", filter);
+		
 		return "adminPage";
 	}
 
-	
 	
 	
 	@RequestMapping(value="/admin", method=RequestMethod.POST)

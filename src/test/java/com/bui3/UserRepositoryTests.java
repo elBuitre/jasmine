@@ -2,7 +2,7 @@ package com.bui3;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import java.util.Date;
+//import java.util.Date;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -20,11 +20,11 @@ public class UserRepositoryTests {
 	private User user;
 	
 	private final String USERNAME = "elbuitre";
-	private final String FIRST_NAME = "Stefano";
-	private final String LAST_NAME = "Carniel";
+	//private final String FIRST_NAME = "Stefano";
+	//private final String LAST_NAME = "Carniel";
 	private final String PASSWORD = "pwd";
 	private final String FAKE_USER = "fakeuser";
-	private final Role.RoleValues ROLE = Role.RoleValues.ADMIN;
+	//private final Role.RoleValues ROLE = Role.RoleValues.ADMIN;
 	private final int TOTAL_USERS = 10;
 	
 	@Test
@@ -81,7 +81,7 @@ public class UserRepositoryTests {
 	
 	@Test
 	public void userExpired() {
-		Date expireon = new Date();
+		//Date expireon = new Date();
 		//expireon = expireon. Date.now().minusDays(1);
 		user = new User();
 		//user.setFirstname(FIRST_NAME);
