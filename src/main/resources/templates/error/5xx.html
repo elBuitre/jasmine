@@ -1,0 +1,29 @@
+<html>
+	<head>
+	    <meta name="viewport" content="width=device-width, initial-scale=1" />
+		<link rel="stylesheet" type="text/css" th:href="@{css/bootstrap.min.css}" media="screen" />
+		<link rel="stylesheet" type="text/css" th:href="@{css/signin.css}" />
+		<link rel="stylesheet" type="text/css" th:href="@{css/5xx.css}" media="screen" />
+		<link href="https://fonts.googleapis.com/css?family=Josefin+Sans|Quicksand" rel="stylesheet" />
+	    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+	    <script src="//code.jquery.com/jquery.js"></script>
+	    <!-- Include all compiled plugins (below), or include individual files as needed -->
+	    <script src="../js/bootstrap.min.js"></script>
+	    <script src="../js/admin.js"></script>
+		<title th:text="#{error.404.title}">error.5xx.title</title>
+	</head>
+	<body>
+		<div class="container">
+			<div class="row">
+				<div class="col-md-4">
+					<label class="status" th:text="${status}" style="margin: -30px; margin-left: -10px;  font-weight: 400;"></label><br/>
+					<label class="status message" th:text="#{error.message}" style="font-weight: 400;"></label><br/>
+					<label class="status info" th:text="${error} + ': ' + ${message}" style="font-weight: 400; font-style: normal;"></label>
+				</div>
+				<div class="col-md-4">
+					<img th:src="@{/5xx.png}" />
+				</div>
+			</div>
+		</div>
+	</body>
+</html>

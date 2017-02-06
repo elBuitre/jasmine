@@ -1,0 +1,24 @@
+body {
+	background-color: #e8dcde;
+}
+
+img {
+	border-color: #ffffff;
+	border-style: solid;
+	border-width: 20px;
+}
+
+.status {
+	font-size: 160px;
+	font-style: italic;
+	font-family: 'Quicksand', sans-serif;
+	color: #b6787a;
+}
+
+.message {
+	font-size: 20px;
+}
+
+.info {
+	font-size: 10px;
+}

@@ -1,0 +1,18 @@
+body {
+	background-color: #34313a;
+}
+
+.status {
+	font-size: 160px;
+	font-style: italic;
+	font-family: 'Quicksand', sans-serif;
+	color: #b6787a;
+}
+
+.message {
+	font-size: 20px;
+}
+
+.info {
+	font-size: 12px;
+}
