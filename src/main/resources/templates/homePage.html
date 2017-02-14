@@ -1,11 +1,28 @@
 <html>
 <head>
-<title>Jasmine</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+	<link rel="stylesheet" type="text/css" th:href="@{css/bootstrap.min.css}" media="screen" />
+	<link rel="stylesheet" type="text/css" th:href="@{css/location.css}" media="screen" />
+	<link rel="stylesheet" type="text/css" th:href="@{css/admin.css}" />
+	<script src="https://use.fontawesome.com/369dfeb314.js"></script>
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="//code.jquery.com/jquery.js"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/admin.js"></script>
+	<title>Jasmine</title>
 </head>
 <body>
-	<h2>Hello, I'm Jasmine!</h2>
-	<form name="logout" th:action="@{/logout}" method="POST">
-		<input type="submit" value="Sign Out" />
-	</form>
+	<div class="container">
+		<div class="input-group input-sm">
+			<div style="display: inline-block; right: 10px; position: absolute;">
+				<form name="logout" th:action="@{/logout}" method="POST">
+					<button class="btn btn-primary btn-sm" type="submit" th:text="#{signout}" style="margin-top: 15px;" />
+				</form>
+			</div>
+		</div>
+		<div class="input-group input-sm"><hr/></div>
+		<section layout:include="@{location} :: loc" th:with="locations=${locations}"></section>
+	</div>
 </body>
 </html>

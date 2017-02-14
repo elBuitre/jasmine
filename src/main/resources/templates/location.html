@@ -1,0 +1,30 @@
+<html>
+	<body>
+		<section layout:fragment="loc">
+			<ul id="list">
+				<li th:each="child : ${locations}">
+				
+					<a th:if="${child.getChildren().size() > 0}"
+						data-toggle="collapse"
+						th:href="'#' + ${#strings.toString(child)}"
+						style="text-decoration: none;"
+						class="collapsable">
+						<i class="fa fa-plus"></i>
+					</a>
+				
+					<span th:text="${child.id}">child.id</span>
+					
+					<div th:id="${#strings.toString(child)}" class="collapse">
+						<section layout:include="@{location} :: loc" th:with="locations=${child.children}"></section>
+					</div>
+				</li>
+			</ul>
+
+			<script>
+				$('#list li a').click(function(){
+				    $(this).find('i').toggleClass('fa-plus fa-minus')
+				});
+			</script>
+		</section>
+	</body>
+</html>

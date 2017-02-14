@@ -32,7 +32,8 @@ public class JasmineController {
 	@Autowired
 	RoleRepository roleRepository;
 	
-
+	@Autowired
+	LocationRepository locationRepository;
 	
 	public Page<User> populateUsers(Integer pageNumber, String filter) {
 		PageRequest request =
@@ -45,14 +46,15 @@ public class JasmineController {
 		return userRepository.findByStringFieldsLike(filter, request);
 	}
 
-	
-
 	@ModelAttribute("roles")
 	public List<Role> populateRoles() {
 		return roleRepository.findAll();
 	}
 
-
+	@ModelAttribute("locations")
+	public List<Location> populateLocations() {
+		return locationRepository.findByParentIsNull();
+	}
 	
 	@RequestMapping(method=RequestMethod.GET)
 	public String homePage() {
